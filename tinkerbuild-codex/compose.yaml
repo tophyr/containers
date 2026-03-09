@@ -1,18 +1,14 @@
 services:
   codex:
-    image: ghcr.io/tophyr/tinkerbuild-codex:2026-03-09
+    image: ghcr.io/tophyr/tinkerbuild-codex:2026-03-09-r1
     environment:
-      HOME: /home/ubuntu
-      CODEX_HOME: /home/ubuntu/.codex
+      HOME: /root
+      CODEX_HOME: /root/.codex
     volumes:
-      - codex_state:/home/ubuntu/.codex
+      - ${HOME}/.codex:/root/.codex
       - ./:/workspace
     working_dir: /workspace
     stdin_open: true
     tty: true
     restart: unless-stopped
     command: ["sleep", "infinity"]
-
-volumes:
-  codex_state:
-    external: true

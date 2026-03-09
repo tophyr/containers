@@ -1,7 +1,6 @@
 FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG USERNAME=ubuntu
 
 ARG ANDROID_CMDLINE_TOOLS_VERSION=11076708
 ARG ANDROID_PLATFORM=android-35
@@ -62,7 +61,7 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools \
     && mv ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest \
     && rm -f /tmp/android-cmdline-tools.zip
 
-ENV PATH=${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools:/home/${USERNAME}/.cargo/bin:${PATH}
+ENV PATH=${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools:/root/.cargo/bin:${PATH}
 
 RUN yes | sdkmanager --licenses >/dev/null \
     && sdkmanager \
@@ -75,13 +74,12 @@ RUN yes | sdkmanager --licenses >/dev/null \
 ENV ANDROID_NDK_HOME=${ANDROID_SDK_ROOT}/ndk/${ANDROID_NDK_VERSION}
 
 RUN mkdir -p /workspace \
-    && chown -R ${USERNAME}:${USERNAME} ${ANDROID_SDK_ROOT} /workspace
+    && chown -R root:root ${ANDROID_SDK_ROOT} /workspace
 
-USER ${USERNAME}
 WORKDIR /workspace
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable \
-    && ~/.cargo/bin/rustup component add rustfmt clippy
+    && /root/.cargo/bin/rustup component add rustfmt clippy
 
 EXPOSE 80
 CMD ["bash"]
