@@ -1,0 +1,16 @@
+services:
+  codex:
+    image: ${TINKERBUILD_CODEX_IMAGE}
+    env_file:
+      - .env
+    environment:
+      HOME: /home/ubuntu
+      CODEX_HOME: ${CONTAINER_CODEX_HOME}
+    volumes:
+      - ${CODEX_HOST_CONFIG_DIR}:${CONTAINER_CODEX_HOME}:ro
+      - ../:/workspace
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    command: ["codex"]
+
