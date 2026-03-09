@@ -5,13 +5,14 @@ This image extends `ghcr.io/tophyr/tinkerbuild:2026-03-09` and installs the Open
 ## Secrets model
 
 - Do not bake any API key/token into `Dockerfile`.
-- Reuse local Codex login by mounting host `~/.codex` into container.
-- Keep local path config in `.env` (ignored by git).
+- Use the local Docker volume `codex_state` for Codex auth/config state.
+- Seed that volume from your host login files with `scripts/init-codex-volume.sh`.
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and set values for your machine.
-2. Keep `.env` private (already in `.gitignore`).
+```bash
+scripts/init-codex-volume.sh
+```
 
 ## Build
 
@@ -27,4 +28,3 @@ docker compose run --rm codex
 ```
 
 This launches `codex` inside the container using your existing host login state from `~/.codex/auth.json`.
-

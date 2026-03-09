@@ -1,16 +1,17 @@
 services:
   codex:
-    image: ${TINKERBUILD_CODEX_IMAGE}
-    env_file:
-      - .env
+    image: ghcr.io/tophyr/tinkerbuild-codex:2026-03-09
     environment:
       HOME: /home/ubuntu
-      CODEX_HOME: ${CONTAINER_CODEX_HOME}
+      CODEX_HOME: /home/ubuntu/.codex
     volumes:
-      - ${CODEX_HOST_CONFIG_DIR}:${CONTAINER_CODEX_HOME}:ro
+      - codex_state:/home/ubuntu/.codex
       - ../:/workspace
     working_dir: /workspace
     stdin_open: true
     tty: true
     command: ["codex"]
 
+volumes:
+  codex_state:
+    external: true
