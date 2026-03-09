@@ -6,11 +6,12 @@ services:
       CODEX_HOME: /home/ubuntu/.codex
     volumes:
       - codex_state:/home/ubuntu/.codex
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     stdin_open: true
     tty: true
-    command: ["codex"]
+    restart: unless-stopped
+    command: ["sleep", "infinity"]
 
 volumes:
   codex_state:
